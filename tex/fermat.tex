@@ -1,0 +1,128 @@
+\section{Fatoração de Fermat}
+
+Em particular, suponha que haja o conhecimento prévio de que a fatoração da chave pública sejam números próximos de $\sqrt{n}$, mostraremos um método eficiente desenvolvido pelo matemático francês Pierre de Fermat (1601-1665) capaz de descobrir $p$ e $q$ com voracidade.
+
+\subsection{Método}
+Seja $n$ um número inteiro maior do que 1 que desejamos fatorar. Note que, o objetivo principal do método é encontrar inteiros não negativos $x$ e $y$, tais que $n = x^{2} - y^{2}$; já que é conhecida a identidade $x^{2} - y^{2} = (x-y)(x+y)$, daí encontramos uma fatoração de $n$ que não necessariamente é em fatores primos. Entretanto, como no sistema RSA trabalhamos com semiprimos, o método encontra uma fatoração em primos.
+
+\subsubsection{Algoritmo de Fatoração}
+
+\begin{definicao}
+Seja $n$ um inteiro ímpar maior do que $1$. \\
+    \textbf{\underline{Passo 1:}} Calcule $\sqrt{n}$
+    \begin{itemize}
+        \item Se $\sqrt{n}$ for um número inteiro, então o processo terminou, pois n é um quadrado perfeito e basta, então, tomarmos $x=\sqrt{n}$ e $y-0$.
+        \item Se $\sqrt{n}$ não for um número inteiro, defina $\lfloor \sqrt{n} \rfloor$ e siga para o \textbf{Passo 2}
+    \end{itemize}
+    \textbf{\underline{Passo 2:}} Faça $x=b+1$. 
+    \begin{itemize}
+        \item Se $x = \frac{n+1}{2}$, então $n$ é primo, $y = \sqrt{x ^{2}- n}$ e o processo terminou. Nesse caso, observe que 
+        
+        \begin{align*}
+            y &= \sqrt{x^{2} - n} \\
+            &= \sqrt{\left(\frac{n+1}{2}\right)^{2} - n} \\
+            &= \frac{n - 1}{2}.
+        \end{align*}
+        \item Se $x \ne \frac{n+1}{2}$, então siga para o \textbf{Passo 3}
+    \end{itemize}
+    \textbf{\underline{Passo 3:}} Calcule $y = \sqrt{x^{2} - n}$.
+
+    \begin{itemize}
+        \item Se $y$ for um número inteiro, então o processo terminou pois n é composto e obtivemos inteiros não negativos $x$ e $y$ tais que $x>y$ e $n = x^{2} - y^{2}$.
+        \item Se y não for um nuúmero inteiro, desconsidere o valor anterior de b, defina $b=x$ e volte para o \textbf{Passo 2}, redefinindo x conforme este novo valor de $b$.
+    \end{itemize}
+\end{definicao}
+
+\subsubsection{Por que o método funciona?}
+
+Na demonstração consideramos que $n$ é um número ímpar, pois, caso contrário seria possível escrever $n = 2^{a} \cdot b$ para $a$ inteiro positivo e algum $b$ inteiro positivo ímpar. Dado que $2$ é primo, bastaria fatorar $b$ para descobrir a fatoração de $n$ como produto de números primos, logo, recaindo no problema de se fatorar números ímpares.
+
+\subsection{Implementação Computacional}
+
+\begin{lstlisting}[style=PythonStyle, caption=Fermat Algorithm, label=code:Fermat]
+def fermat(N):
+    x = math.isqrt(N)
+    
+    if (N%2 == 0):
+        return (2, N//2)
+
+    if (x*x == N):
+        return (x, x)
+
+    while x != (N + 1)//2:
+        x = x + 1
+        w = pow(x, 2) - N
+        y = math.isqrt(w)
+        if (y*y  == w):
+            return (x-y, x+y)
+
+    return (1, N)
+\end{lstlisting}
+
+\subsubsection{Simulação}
+Como comentado no início da seção, a Fatoração de Fermat é um mecânismo útil quando os fatores do número são próximos, entretanto, vamos analisar o quão melhor o algoritmo se torna ao tomar o pior e melhor caso; isto é, no pior caso tomar um semiprimo $n = 3 \cdot p$ - tomamos 3 pois o algoritmo trata o 2 como um caso particular e por isso não segue diretamente o algoritmo -  e o melhor caso em que $p$ e $q$ são os primos mais próximos. Além disso, incrementamos os digitos do número e vemos o tempo decorrido para calcular a decomposiççao em primos.
+
+
+\begin{table}[H]
+\centering
+\caption{Tabela para Fatoração de Semiprimos}
+\label{tab:fatores}
+\begin{tabular}{r l}
+\toprule
+Semiprimo (N) & Fatores (p, q) \\
+\midrule
+15 & 3\cdot 5\\
+143 & 11\cdot 13\\
+2491 & 47\cdot 53\\
+47053 & 211\cdot 223\\
+304679 & 547\cdot 557\\
+5494327 & 2341\cdot 2347\\
+76562491 & 8747\cdot 8753\\
+816359183 & 28571\cdot 28573\\
+7844290183 & 88547\cdot 88589\\
+83274953467 & 288571\cdot 288577\\
+150986644891 & 388567\cdot 388573\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Tabela para Fatoração de Semiprimos}
+\label{tab:fatores_f}
+\begin{tabular}{r l} 
+\toprule
+Semiprimo (N) & Fatores (p, q) \\
+\midrule
+93 & $3 \cdot 31$\\
+267 & $3 \cdot 89$\\
+1569 & $3 \cdot 523$\\
+19473 & $3 \cdot 6491$\\
+499461 & $3 \cdot 166487$\\
+2899473 & $3 \cdot 966491$\\
+17899473 & $3 \cdot 5966491$\\
+107899431 & $3 \cdot 35966477$\\
+1607899443 & $3 \cdot 535966481$\\
+13607899449 & $3 \cdot 4535966483$\\
+874607899119 & $3 \cdot 291535966373$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/nologFermat.png}
+        \caption{Sem Escala Logarítmica.}
+        \label{fig:a}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/logFermat.png}
+        \caption{Escala Logarítmica.}
+        \label{fig:b}
+    \end{minipage}
+\end{figure}
+
