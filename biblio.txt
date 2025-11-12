@@ -1,0 +1,9 @@
+Força Bruta
+https://pt.numberempire.com/primenumbers.php
+https://pt.wikipedia.org/wiki/RSA_(sistema_criptogr%C3%A1fico)
+https://pt.wikipedia.org/wiki/Ataque_de_for%C3%A7a_bruta
+
+Fatoração de Fermat
+https://clubes.obmep.org.br/blog/fatoracao-por-fermat-justificando-o-algoritmo/
+https://www.youtube.com/watch?v=TA7eTxeqT80&t=8s
+https://en.wikipedia.org/wiki/Fermat%27s_factorization_method

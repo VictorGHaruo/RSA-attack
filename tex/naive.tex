@@ -1,0 +1,117 @@
+\section{Fatoração (Naive Algorithm)}
+Uma abordagem natural contra o sistema criptogáfico RSA consiste na fatoração da chave pública $n$ (um semiprimo) com fim de encontrar os fatores primos $p$ e $q$. Por conseguinte, descobre-se a classe de congruência $\phi(n) = (p-1)(q-1)$ que daí basta determinar $d$ -  inverso multiplicativo de $e$ - resultando na completa quebra da criptografia e, portanto, a exposição da mensagem.
+
+Apesar disso, a fatoração de números inteiros é um problema computacionalmente custoso visto que hodiernamente o sistema RSA adota como padrão mínimo 1024 bits como o tamanho da chave pública, equivalente a cerca de 300 dígitos. Ademais, os algoritmos tendem a ter maior dificuldade para encontrar números semiprimos como no caso do RSA, daí com as tecnologias disponíveis em estimativa demora de 10 à 15 anos de computação para descriptografar com tal método. 
+
+Logo, a fatoração de números inteiras é virtualmente inofensivo e inviável para um ataque sério ao RSA, entretanto, é útil no âmbito acadêmico dado que é uma ótima base de comparação com os demais ataques.
+
+\subsection{Implementação Computacional}
+
+
+O algoritmo de "força bruta" para fatoração é conhecido como Divisão por Tentativa (Trial Division). Embora sua premissa seja simples, é possível otimizá-lo para contornar casos desnecessários como:
+
+\begin{enumerate}
+    \item \textbf{Limite de $\sqrt{n}$:} Basta testar divisores até a raiz quadrada de $n$. Se $n$ possuir um fator $a > \sqrt{n}$, ele obrigatoriamente terá um fator $b < \sqrt{n}$ (tal que $n = ab$), que já teria sido encontrado.
+    
+    \item \textbf{Tratamento do fator 2:} O número 2 é o único primo par. Ele pode ser tratado em um loop separado, o que permite que o loop principal teste apenas divisores ímpares.
+    
+    \item \textbf{Teste de ímpares:} Após remover todos os fatores 2, o $n$ restante é ímpar. Seus fatores primos também serão ímpares. Portanto, o loop principal pode testar apenas divisores a partir de 3, incrementando o divisor de 2 em 2 (3, 5, 7, ...).
+\end{enumerate}
+
+\begin{lstlisting}[style=PythonStyle, caption=Naive Algorithm, label=code:Naive]
+    def naive(n):
+        begin = time.time()
+        div = []
+        while (n%2 == 0):
+            div.append(2)
+            n = n//2
+        i = 3
+        while i*i <= n:
+            print(i)            
+            while n%i == 0:
+                div.append(i)
+                n = n//i
+            i = i + 2
+
+        end = time.time()
+        if n > 1:
+            div.append(n)
+        return div, end-begin
+
+\end{lstlisting}
+
+\subsection{Simulação Computacional}
+
+Com o intuito de compreender a natureza do método, realizou-se testes computacionais focados no pior caso do algoritmo: a fatoração de semiprimos. O experimento consistiu em variar o número de dígitos do semiprimo e comensurar o tempo de execução decorrido.
+
+\begin{table}[H]
+    \centering
+    \label{tab:tempos_sample}
+    \begin{tabular}{cc}
+\toprule
+Digitos & Tempo (s) \\
+\midrule
+1 & $2.38 \times 10^{-6}$ \\
+6 & $5.69 \times 10^{-4}$ \\
+11 & 0.30 \\
+16 & 123.84 \\
+\bottomrule
+\end{tabular}
+\caption{Amostragem dos Tempos de Fatoração (a cada 5 itens)}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Semiprimos e seu respectivo número de dígitos}
+\label{tab:semiprimes_digitos}
+\begin{tabular}{rc}
+\toprule
+\textbf{Semiprimo (n)} & \textbf{N° de Dígitos} \\
+\midrule
+6 & 1 \\
+77 & 2 \\
+989 & 3 \\
+2291 & 4 \\
+97627 & 5 \\
+358091 & 6 \\
+8846573 & 7 \\
+63451711 & 8 \\
+553789213 & 9 \\
+5276275391 & 10 \\
+48965927779 & 11 \\
+868082737663 & 12 \\
+5163693436199 & 13 \\
+53684551531801 & 14 \\
+635621477042171 & 15 \\
+6750421608780299 & 16 \\
+68569780649272979 & 17 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Por meio dos dados presentes na tabela, é plausível julgar um crescimento exponencial. Essa natureza é visualmente confirmada nos gráficos da Figura \ref{fig:asew}.
+
+O gráfico da esquerda (Figura \ref{fig:asew}) plota os dados em escala linear; a curva explode de tal forma que os primeiros pontos se tornam indistinguíveis, um comportamento clássico de crescimento exponencial.
+
+O gráfico da direita (Figura \ref{fig:tfdras}), por sua vez, aplica uma escala logarítmica ao eixo Y (Tempo). Como esperado de uma função exponencial, os pontos se alinham em uma reta, confirmando a relação $Tempo \approx e^k$, onde $k$ é o número de dígitos.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/nolog.png}
+        \caption{Sem Escala Logarítmica.}
+        \label{fig:asew}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/log.png}
+        \caption{Escala Logarítmica.}
+        \label{fig:tfdras}
+    \end{minipage}
+\end{figure}
+
+O resultado final é categórico: o algoritmo levou 287 segundos (mais de 4 minutos e meio) para fatorar um semiprimo de apenas 17 dígitos. Considerando que chaves RSA (que são semiprimos) utilizavam como padrão mínimo 1024 bits (cerca de 300 dígitos), fica evidente que o método de divisão por tentativa é computacionalmente inviável para qualquer aplicação criptográfica real.
+
+
