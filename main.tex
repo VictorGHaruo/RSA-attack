@@ -1,0 +1,87 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[shortlabels]{enumitem}
+\usepackage{fancyhdr} 
+\usepackage{lastpage} 
+\usepackage{amsthm}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{wrapfig}
+\usepackage{subcaption}
+\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue]{hyperref}
+\usepackage{xurl}
+\usepackage[alf]{abntex2cite} 
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{mdframed} 
+\pgfplotsset{compat=1.18}
+
+%--------Muda as Cores do Template do Código--------
+\definecolor{bggray}{RGB}{245, 245, 245}     
+\definecolor{keywordblue}{RGB}{0, 0, 180}    
+\definecolor{stringred}{RGB}{180, 0, 0}      
+\definecolor{commentgreen}{RGB}{34, 139, 34} 
+\definecolor{numberpurple}{RGB}{128, 0, 128} 
+
+\lstdefinestyle{PythonStyle}{
+    backgroundcolor=\color{bggray},   
+    basicstyle=\ttfamily\footnotesize, 
+    frame=single,                     
+    rulecolor=\color{gray},           
+    keywordstyle=\color{keywordblue}\bfseries, 
+    stringstyle=\color{stringred},    
+    commentstyle=\color{commentgreen}\itshape,
+    numberstyle=\color{numberpurple}, 
+    showstringspaces=false,           
+    numbers=left,                     
+    numbersep=5pt,                    
+    tabsize=4,                        
+    captionpos=b,                     
+    breaklines=true,                      language=Python                   
+}
+%------------------------------------------------
+
+%--------Configuração do Header e Footer--------
+\pagestyle{fancy}
+\fancyhf{} 
+
+\lhead{\includegraphics[height=0.29cm]{img/emap.png}} 
+\rhead{\textbf{Fundação Getúlio Vargas}}
+
+\lfoot{Álgebra \& Criptografia}
+\rfoot{Página \thepage\ de \pageref{LastPage}} 
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+%-----------------------------------------------
+
+%-------------------Caixinha--------------------
+\newtheorem{definicao_interna}{Definição} 
+\newtheorem{teorema}{Teorema}[section]
+
+\newmdenv[
+  linecolor=black,
+  linewidth=1pt,
+  roundcorner=5pt,
+  backgroundcolor=gray!10,
+  innertopmargin=5pt,
+  innerbottommargin=10pt,
+  innerleftmargin=10pt,
+  innerrightmargin=10pt,
+]{definicao}
+%----------------------------------------------
+
+
+\begin{document}
+    \input{tex/cape.tex}
+    \input{tex/naive.tex}
+    \input{tex/fermat.tex}
+\end{document}
