@@ -60,3 +60,5 @@ def compare(semiprimesF, semiprimesC):
 # semiprimesC=[15, 143, 2491, 47053, 304679, 5494327, 76562491]
 # semiprimesF=[93, 267, 1569, 19473, 499461, 2899473, 17899473]
 compare(semiprimesF, semiprimesC)
+
+
