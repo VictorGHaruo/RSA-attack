@@ -11,7 +11,7 @@ Seja $n$ um número inteiro maior do que 1 que desejamos fatorar. Note que, o ob
 Seja $n$ um inteiro ímpar maior do que $1$. \\
     \textbf{\underline{Passo 1:}} Calcule $\sqrt{n}$
     \begin{itemize}
-        \item Se $\sqrt{n}$ for um número inteiro, então o processo terminou, pois n é um quadrado perfeito e basta, então, tomarmos $x=\sqrt{n}$ e $y-0$.
+        \item Se $\sqrt{n}$ for um número inteiro, então o processo terminou, pois n é um quadrado perfeito e basta, então, tomarmos $x=\sqrt{n}$ e $y=0$.
         \item Se $\sqrt{n}$ não for um número inteiro, defina $\lfloor \sqrt{n} \rfloor$ e siga para o \textbf{Passo 2}
     \end{itemize}
     \textbf{\underline{Passo 2:}} Faça $x=b+1$. 
@@ -29,13 +29,79 @@ Seja $n$ um inteiro ímpar maior do que $1$. \\
 
     \begin{itemize}
         \item Se $y$ for um número inteiro, então o processo terminou pois n é composto e obtivemos inteiros não negativos $x$ e $y$ tais que $x>y$ e $n = x^{2} - y^{2}$.
-        \item Se y não for um nuúmero inteiro, desconsidere o valor anterior de b, defina $b=x$ e volte para o \textbf{Passo 2}, redefinindo x conforme este novo valor de $b$.
+        \item Se y não for um número inteiro, desconsidere o valor anterior de b, defina $b=x$ e volte para o \textbf{Passo 2}, redefinindo x conforme este novo valor de $b$.
     \end{itemize}
 \end{definicao}
 
 \subsubsection{Por que o método funciona?}
 
-Na demonstração consideramos que $n$ é um número ímpar, pois, caso contrário seria possível escrever $n = 2^{a} \cdot b$ para $a$ inteiro positivo e algum $b$ inteiro positivo ímpar. Dado que $2$ é primo, bastaria fatorar $b$ para descobrir a fatoração de $n$ como produto de números primos, logo, recaindo no problema de se fatorar números ímpares.
+Para demonstrar o funcionamento do algoritmo, dividiremos a prova em passos, mostrando o funcionamento para números compostos que não são quadrados perfeitos e provando que o algoritmo é finito.
+
+Na demonstração, consideramos que $n$ é um número ímpar. Caso contrário, seria possível escrever $n = 2^{a} \cdot b$, com $a$ inteiro positivo e $b$ inteiro positivo ímpar. Dado que $2$ é primo, bastaria fatorar $b$ para descobrir a fatoração de $n$ em números primos, recaindo assim no problema de fatorar números ímpares.
+
+Dessa maneira, vamos mostrar que, para o caso em que $n$ é inteiro composto, ímpar e maior do que 1, sempre encontraremos o valor de $x$.
+
+Seja $n$ um inteiro composto, ímpar, maior do que 1 e que não seja um quadrado perfeito. Seja $n=a \cdot b$ uma fatoração para $n$, com $a$ e $b$ inteiros tais que $1 < a < b < n$. Note que $a \neq b$, já que estamos supondo que $n$ não é quadrado perfeito; além disso, $a$ e $b$ devem ser ímpares.
+
+Devemos assegurar a existência de números inteiros positivos $x$ e $y$ tais que $n=x^2 - y^2$.
+
+\[
+\begin{cases}
+    n = a \cdot b \\
+    n = x^2 - y^2
+\end{cases}
+\]
+
+Assim, temos que $a \cdot b = (x-y)(x+y)$. Tomemos $a = x-y$ e $b = x+y$. Logo:
+
+\[
+\begin{cases}
+    x = \frac{a+b}{2}\\
+    y = \frac{b-a}{2}
+\end{cases}
+\]
+
+Verifiquemos que os valores de $x$ e $y$ satisfazem todas as condições necessárias:
+
+\begin{enumerate}
+    \item Como $1 < a < b < n$, então $a+b > 0$ e $b-a > 0$. Assim, $x$ e $y$ são positivos.
+    
+    \item Como $a$ e $b$ são ímpares, a soma $a+b$ e a diferença $b-a$ são pares. Logo, $x$ e $y$ são inteiros.
+    
+    \item Note que:
+    \[
+    x^2 - y^2 = \left(\frac{a+b}{2}\right)^2 - \left(\frac{b-a}{2}\right)^2 = \frac{(a+b)^2 - (b-a)^2}{4} = \frac{4ab}{4} = a \cdot b = n
+    \]
+    Daí, $n = x^2 - y^2$, o que implica $y = \sqrt{x^2 - n}$, dado que $y$ é positivo.
+
+    \item Sabemos que, para $a \neq b$, $(\sqrt{a} - \sqrt{b})^2 > 0$. Assim, $a - 2\sqrt{ab} + b > 0$, o que implica $\sqrt{ab} < \frac{a+b}{2}$.
+    Dessa forma, $\sqrt{n} < x$. Portanto, $x > \lfloor \sqrt{n} \rfloor$. Como $x$ é inteiro, temos que $\lfloor \sqrt{n} \rfloor + 1 \le x$.
+
+    \item Sendo $b > a \geq 2$ (pois $n$ é composto ímpar, logo os fatores são $\ge 3$), temos:
+    \begin{itemize}
+        \item $2 < b \implies a = \frac{a}{2} \cdot 2 < \frac{a}{2} \cdot b = \frac{ab}{2}$. Logo, $a < \frac{ab}{2}$.
+        \item De $2 \leq a$, segue que $b = 2 \cdot \frac{b}{2} \leq a \cdot \frac{b}{2} = \frac{ab}{2}$. Logo, $b \leq \frac{ab}{2}$.
+    \end{itemize}
+    Somando as desigualdades:
+    \[
+    a + b < \frac{ab}{2} + \frac{ab}{2} = ab < ab + 1
+    \]
+    Dividindo por 2:
+    \[
+    \frac{a + b}{2} < \frac{ab + 1}{2} = \frac{n + 1}{2}
+    \]
+    Portanto, {$x < \frac{n + 1}{2}$}.
+
+    \vspace{0.5cm}
+
+    \item Note que $x - y = \frac{a + b - (b - a)}{2} = \frac{2a}{2} = a$.
+    Como $n$ é composto, temos $a > 1$, logo {$x - y > 1$}.
+\end{enumerate}
+
+Assim, o algoritmo funciona para $n$ composto e não quadrado perfeito.
+
+Sabemos que, se $n$ é composto, encontraremos um valor adequado para $x$ tal que $x < \frac{n+1}{2}$. Portanto, se $x$ atingir o valor $\frac{n+1}{2}$ no decorrer do processo sem encontrar uma fatoração, significa que $n$ não é composto. Como o algoritmo é aplicado para um inteiro ímpar maior do que 1, não sendo composto, $n$ será primo. Dessa maneira, demonstramos também que o algoritmo é finito.
+
 
 \subsection{Implementação Computacional}
 
@@ -60,7 +126,7 @@ def fermat(N):
 \end{lstlisting}
 
 \subsubsection{Simulação}
-Como comentado no início da seção, a Fatoração de Fermat é um mecânismo útil quando os fatores do número são próximos, entretanto, vamos analisar o quão melhor o algoritmo se torna ao tomar o pior e melhor caso; isto é, no pior caso tomar um semiprimo $n = 3 \cdot p$ - tomamos 3 pois o algoritmo trata o 2 como um caso particular e por isso não segue diretamente o algoritmo -  e o melhor caso em que $p$ e $q$ são os primos mais próximos. Além disso, incrementamos os digitos do número e vemos o tempo decorrido para calcular a decomposiççao em primos.
+Como comentado no início da seção, a Fatoração de Fermat é um mecanismo útil quando os fatores do número são próximos, entretanto, vamos analisar o quão melhor o algoritmo se torna ao tomar o pior e melhor caso; isto é, no pior caso tomar um semiprimo $n = 3 \cdot p$ - tomamos 3 pois o algoritmo trata o 2 como um caso particular e por isso não segue diretamente o algoritmo -  e o melhor caso em que $p$ e $q$ são os primos mais próximos. Além disso, incrementamos os digitos do número e vemos o tempo decorrido para calcular a decomposição em primos.
 
 
 \begin{table}[H]
@@ -126,3 +192,50 @@ Semiprimo (N) & Fatores (p, q) \\
     \end{minipage}
 \end{figure}
 
+Logo, para números primos próximos a fatoração de Fermat é indiscutivelmente boa, não obstante, a eficiência decaí exponencialmente quando os primos se distam.
+
+\subsection{Afinal, Qual é Melhor?}
+
+Pela simulação anterior é visível a eficiência da Fatoração de Fermat para números primos próximos, entretanto, vimos que para primos distantes é um algoritmo computacionalmente ruim, então é factível indagar se ainda assim consegue ser melhor do que utilizar a força bruta. Além disso, quão melhor é para números primos próximos? 
+
+Destarte, segue uma simulação comparando os tempos computacionais do Algoritmo de Fatoração de Fermat em relação ao Força Bruta.
+
+Para Números Primos Próximos
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/compareCnolog.png}
+        \caption{Sem Escala Logarítmica.}
+        \label{fig:fda}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/compareClog.png}
+        \caption{Escala Logarítmica.}
+        \label{fig:fdse}
+    \end{minipage}
+\end{figure}
+
+Para Números Primos Distantes
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/compareFnolog.png}
+        \caption{Sem Escala Logarítmica.}
+        \label{fig:fdac}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/compareFlog.png}
+        \caption{Escala Logarítmica.}
+        \label{fig:fdsec}
+    \end{minipage}
+\end{figure}
+
+Por análise visual, vemos que para valores primos próximos - como esperado - o algoritmo de Fermat é superior; em contra partida, para primos distantes apesar da força bruta ser um algoritmo ineficiente ainda assim, consegue superar o de Fermat. Em suma, o Algoritmo de Fatoração de Fermat não é um método perfeito, isto é, não podemos/devemos utilizá-lo em qualquer situação indiscriminadamente, é necessário que haja um conhecimento prévio de que o RSA tem uma falha estrutural ao ter números da chave pública com valores próximos.

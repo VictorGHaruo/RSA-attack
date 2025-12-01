@@ -8,7 +8,7 @@ Logo, a fatoração de números inteiras é virtualmente inofensivo e inviável 
 \subsection{Implementação Computacional}
 
 
-O algoritmo de "força bruta" para fatoração é conhecido como Divisão por Tentativa (Trial Division). Embora sua premissa seja simples, é possível otimizá-lo para contornar casos desnecessários como:
+O algoritmo de "força bruta"  para fatoração é conhecido como Divisão por Tentativa (Trial Division). Embora sua premissa seja simples, é possível otimizá-lo para contornar casos desnecessários como:
 
 \begin{enumerate}
     \item \textbf{Limite de $\sqrt{n}$:} Basta testar divisores até a raiz quadrada de $n$. Se $n$ possuir um fator $a > \sqrt{n}$, ele obrigatoriamente terá um fator $b < \sqrt{n}$ (tal que $n = ab$), que já teria sido encontrado.
