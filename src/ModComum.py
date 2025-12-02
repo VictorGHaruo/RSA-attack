@@ -1,3 +1,5 @@
+import time
+
 def extended_gcd(a, b):
     x0, y0 = 1, 0
     x1, y1 = 0, 1
@@ -18,14 +20,17 @@ m = 123456789
 
 c1 = pow(m, e1, n)
 c2 = pow(m, e2, n)
-
 print("c1 =", c1)
 print("c2 =", c2)
 
-g, a, b = extended_gcd(e1, e2)
 
+start = time.time()
+g, a, b = extended_gcd(e1, e2)
 # pow() lida com expoentes negativos automaticamente
 m_rec = (pow(c1, a, n) * pow(c2, b, n)) % n
 
+end = time.time()
+
 print("a =", a, " b =", b)
-print("Recovered m =", m_rec)
+print("M descoberto =", m_rec)
+print(f"Em {end - start} segundos.")

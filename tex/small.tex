@@ -1,0 +1,60 @@
+\section{Ataque da Pequena Chave Pública}
+
+Como em todo processo, sempre buscamos maior rapidez e eficiência, assim,
+podemos ficar bastante tentados em possuir um expoente público pequeno, 
+para que no processo de encriptação, $c \equiv m^{e} \pmod{n}$, a demora 
+computacional seja reduzida.
+
+De fato parece tentador e seguro, já que a \textit{dificuldade} de quebra
+do RSA se deve a fatoração de $n$, então diminuir o expoente parece
+rasoável.
+
+Entretanto, existe uma limitação nesse processo, uma vez que caso $m^e < n$
+a criptografia $c \equiv m^e \pmod{n} \Rightarrow c = m^e$, então basta 
+$$m = \sqrt[e]{c}$$ para recuperar a mensagem e novamente \textbf{sem 
+precisar fatorar n.}
+
+\subsection{O Ataque de Hastad}
+
+Suponhamos que um emissor quer enviar uma mensagem encriptada
+$M$ para os receptores $R_1, R_2, \cdots,R_k$. Cada um dos receptores tem
+a sua chave pública $(N_i, e_i)$. Vamos assumir que M é menor que
+qualquer dos $N_i$. Um intruso pode interceptar a ligação sem que
+o emissor se aperceba e colecionar os $k$ criptogramas.
+
+Simplificando, considere que todos possuem $e_i = 3$. Podemos mostrar que se
+$k \geq 3$, o intruso consegue recruperar a mensagem $M$ a partir de $C_1, C_2, C_3, \cdots$
+criptografia da mensagem em cada emissão.
+
+Pois veja, se temos:
+$$
+\begin{cases}
+    C_1 \equiv m^3 \pmod{N_1} \\ 
+    C_2 \equiv m^3 \pmod{N_2} \\
+    C_3 \equiv m^3 \pmod{N_3}
+\end{cases}
+$$
+Temos também que $\gcd(N_i, N_j) = 1 \quad \forall i,j$ (Ou seja, coprimos, pois caso não fossem,
+poderiamos encontrar fatoração deles). E pelo Teorema do Resto Chinês (TRC),
+podemos encontrar $C'$ tal que $C' \equiv m^3 \pmod{N_1N_2N_3}$.
+
+Assim, como 
+$$
+\begin{cases}
+    m < N_1 \\
+    m < N_2 \\
+    m < N_3
+\end{cases} \Rightarrow m^3 < N_1N_2N_3
+$$
+Portanto, $C' = m^3 \Rightarrow m = \sqrt[3]{C'}$.
+
+De forma mais geral, se os expoentes de encriptação forem todos iguais a $e$,
+pode-se recuperar $M$ assim que se tenha $k > e$ onde $k$ é o número de
+criptogramas interceptados. Portanto, este ataque só será bem sucedido
+se o expoente público e for relativamente pequeno.
+
+\subsection{Conclusão}
+
+É essencial, mesmo que facilite a encriptação, uso de expoentes relativamente
+altos. Uma boa recomendação é o uso de no mínimo $2^{16}+1$, que de certa forma
+facilita esses calculos e ainda é relativamente grande. 
