@@ -16,7 +16,7 @@ Suponha agora que um atacante intercepte $(c_1,c_2,e_1,e_2,n)$. Mostraremos que,
 se $\gcd(e_1,e_2)=1$, então é possível recuperar a mensagem $m$ \emph{sem fatorar $n$},
 independentemente de seu tamanho.
 
-\subsection*{Recuperação da mensagem}
+\subsection{Recuperação da mensagem}
 
 Como $\gcd(e_1,e_2)=1$, pela Identidade de Bézout existem inteiros $a$ e $b$ tais que
 $$
@@ -32,16 +32,16 @@ o atacante pode computar
 \[
 m \equiv c_1^{a} \cdot c_2^{b} \pmod{n},
 \]
-sem necessidade de fatorar $n$.
+\textbf{sem necessidade de fatorar $\mathbf{n}$.}
 
-\subsection*{Conclusão}
+\subsection{Conclusão}
 
-Assim, se dois usuários compartilham o mesmo módulo $n$ e cifram a mesma 
-mensagem com expoentes públicos coprimos $e_1$ e $e_2$, então qualquer atacante 
+Assim, se dois usuários compartilham o \textbf{mesmo módulo} $n$ e cifram a mesma 
+mensagem com expoentes públicos \textbf{coprimos} $e_1$ e $e_2$, então qualquer atacante 
 que intercepte $(c_1,c_2,e_1,e_2,n)$ pode recuperar a mensagem $m$, violando 
 completamente a segurança do RSA nesse cenário.
 
-% \subsection*{Implementação de teste}
+% \subsection*{Implementação computacional}
 
 % Podemos, de forma iterativa achar os valores de $a$ e $b$ pelo algoritmo de
 % Euclides extendido.
