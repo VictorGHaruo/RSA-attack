@@ -2,7 +2,7 @@
 
 Como em todo processo, sempre buscamos maior rapidez e eficiência, assim,
 podemos ficar bastante tentados em possuir um expoente público pequeno, 
-para que no processo de criptação, $c \equiv m^{e} \pmod{n}$, a demora 
+para que no processo de encriptação, $c \equiv m^{e} \pmod{n}$, a demora 
 computacional seja reduzida.
 
 De fato parece tentador e seguro, já que a \textit{dificuldade} de quebra
@@ -52,3 +52,9 @@ De forma mais geral, se os expoentes de encriptação forem todos iguais a $e$,
 pode-se recuperar $M$ assim que se tenha $k > e$ onde $k$ é o número de
 criptogramas interceptados. Portanto, este ataque só será bem sucedido
 se o expoente público e for relativamente pequeno.
+
+\subsection{Conclusão}
+
+É essencial, mesmo que facilite a encriptação, uso de expoentes relativamente
+altos. Uma boa recomendação é o uso de no mínimo $2^{16}+1$, que de certa forma
+facilita esses calculos e ainda é relativamente grande. 
