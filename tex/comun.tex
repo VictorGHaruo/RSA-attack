@@ -1,11 +1,11 @@
 \section{Ataque do Módulo Comum}
 
-Sabemos que, na encriptografia RSA, cada usuário torna público o par $(e,n)$.
+Sabemos que, na criptografia RSA, cada usuário torna público o par $(e,n)$.
 Considere o caso em que dois usuários compartilham indevidamente o 
 mesmo módulo $n$. Assim, suas chaves públicas são $(e_1,n)$ e $(e_2,n)$.
 
 Suponha que uma mesma mensagem $m$ seja enviada para ambos os usuários. Pela 
-encriptografia RSA, as cifras recebidas são
+criptografia RSA, as cifras recebidas são
 $$
 c_1 \equiv m^{e_1} \pmod{n}
 \qquad\text{e}\qquad
@@ -26,9 +26,10 @@ Então,
 $$
     m \equiv m^1 \equiv m^{a e_1 + b e_2} \equiv (m^{e_1})^a (m^{e_2})^b \pmod{n}
 $$
+
 Caso algum dos coeficientes $a$ ou $b$ seja negativo, utiliza-se o inverso modular 
-adequado, que pode ser obtido pelo algoritmo estendido de Euclides. Portanto,
-o atacante pode computar
+correspondente, que pode ser obtido pelo algoritmo estendido de Euclides. Portanto,
+o atacante pode então computar
 \[
 m \equiv c_1^{a} \cdot c_2^{b} \pmod{n},
 \]
