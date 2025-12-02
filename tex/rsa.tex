@@ -1,0 +1,37 @@
+\section{A criptografia RSA}
+
+A criptografia RSA é um sistema de encriptação que segue o sistema de chave pública e privada. Em resumo, o RSA envolve um par de chaves, uma \textit{chave pública} que pode ser conhecida por todos e uma \textit{chave privada} que deve ser mantida em sigilo. Toda mensagem cifrada só pode ser decifrada usando a respectiva chave privada.
+
+O funcionamento da criptografia RSA é simples:
+
+\subsection{Encriptação}
+Queremos codificar uma mensagem $m \in \{0,1,2, \dots, n-1\}$
+\begin{enumerate}
+    \item Escolha $p$ e $q$ primos grandes.
+    \item Obtenha $n = p \cdot q$
+    \item Escolhemos $e$  tal que $1 < e < \phi(n) $ e $\text{mdc}(e ,\phi(n)) = 1$
+    \item $c \equiv m^{e} \pmod{n}$ ($c$ é a mensagem criptografada)
+\end{enumerate}
+
+A sua chave pública é o par $(n, e)$
+
+\subsection{Decriptação}
+
+\begin{enumerate}
+    \item Precisamos de uma chave privada $d$ tal que $e\cdot d \equiv 1 \pmod{\phi(n)}$
+    \item  Pois $c^{d} \equiv (m^{e})^{d} = m^{ed} = m^{k\phi(n) + 1} = (m^{\phi(n)})^k \cdot m = m \pmod{n}$
+\end{enumerate}
+
+Podemos fazer um exemplo numérico para termos uma ideia de como o sistema funciona (com números pequenos para facilitar os cálculos).
+
+\textbf{Exemplo.} Dada uma mensagem $m$ tal que $0 \leq m < 1219$ e a mensagem criptografada é $c = m^{35} \pmod{1219}$. Qual o valor do expoente descriptografador $d$?
+
+Primeiramente perceba que $n = 1219 = 23 \cdot 53$, logo, $\phi(n) = 22 \cdot 52 = 1144$.
+Portanto, basta encontrar $d$ tal que $35\cdot d \equiv 1 \pmod{1144}$, ou seja, basta resolvermos a equação diofantina
+\[
+    1144x + 35d = 1
+\]
+
+Daí, via algoritmo de Euclides estendido, obtemos que $d = 523$ é o expoente descriptografador.
+
+O exemplo acima mostra que, para "quebrarmos" o RSA, basta encontrar os primos $p$ e $q$ que compõem $n$. Boa parte dos ataques a seguir se basearão nessa ideia.
