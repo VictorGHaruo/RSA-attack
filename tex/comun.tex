@@ -1,0 +1,61 @@
+\section{Ataque do Módulo Comum}
+
+Sabemos que, na criptografia RSA, cada usuário torna público o par $(e,n)$.
+Considere o caso em que dois usuários compartilham indevidamente o 
+mesmo módulo $n$. Assim, suas chaves públicas são $(e_1,n)$ e $(e_2,n)$.
+
+Suponha que uma mesma mensagem $m$ seja enviada para ambos os usuários. Pela 
+criptografia RSA, as cifras recebidas são
+$$
+c_1 \equiv m^{e_1} \pmod{n}
+\qquad\text{e}\qquad
+c_2 \equiv m^{e_2} \pmod{n}.
+$$
+
+Suponha agora que um atacante intercepte $(c_1,c_2,e_1,e_2,n)$. Mostraremos que,
+se $\gcd(e_1,e_2)=1$, então é possível recuperar a mensagem $m$ \emph{sem fatorar $n$},
+independentemente de seu tamanho.
+
+\subsection*{Recuperação da mensagem}
+
+Como $\gcd(e_1,e_2)=1$, pela Identidade de Bézout existem inteiros $a$ e $b$ tais que
+$$
+a e_1 + b e_2 = 1.
+$$
+Então, 
+$$
+    m \equiv m^1 \equiv m^{a e_1 + b e_2} \equiv (m^{e_1})^a (m^{e_2})^b \pmod{n}
+$$
+Caso algum dos coeficientes $a$ ou $b$ seja negativo, utiliza-se o inverso modular 
+adequado, que pode ser obtido pelo algoritmo estendido de Euclides. Portanto,
+o atacante pode computar
+\[
+m \equiv c_1^{a} \cdot c_2^{b} \pmod{n},
+\]
+sem necessidade de fatorar $n$.
+
+\subsection*{Conclusão}
+
+Assim, se dois usuários compartilham o mesmo módulo $n$ e cifram a mesma 
+mensagem com expoentes públicos coprimos $e_1$ e $e_2$, então qualquer atacante 
+que intercepte $(c_1,c_2,e_1,e_2,n)$ pode recuperar a mensagem $m$, violando 
+completamente a segurança do RSA nesse cenário.
+
+% \subsection*{Implementação de teste}
+
+% Podemos, de forma iterativa achar os valores de $a$ e $b$ pelo algoritmo de
+% Euclides extendido.
+
+% \begin{lstlisting}[style=PythonStyle, caption=Extended GCD, label=code:egcd]
+% def extended_gcd(a, b):
+%     x0, y0 = 1, 0
+%     x1, y1 = 0, 1
+
+%     while b != 0:
+%         q = a // b
+%         a, b = b, a % b
+%         x0, x1 = x1, x0 - q * x1
+%         y0, y1 = y1, y0 - q * y1
+
+%     return a, x0, y0   # gcd, x, y
+% \end{lstlisting}
