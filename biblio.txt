@@ -7,3 +7,7 @@ Fatoração de Fermat
 https://clubes.obmep.org.br/blog/fatoracao-por-fermat-justificando-o-algoritmo/
 https://www.youtube.com/watch?v=TA7eTxeqT80&t=8s
 https://en.wikipedia.org/wiki/Fermat%27s_factorization_method
+
+Pollard
+https://www.math.columbia.edu/~goldfeld/PollardAttack.pdf
+https://www.youtube.com/watch?v=fFJMoIj71nQ&t=118s

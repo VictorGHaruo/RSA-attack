@@ -1,0 +1,44 @@
+\section{Ataque Pollard $p-1$}
+
+Entramos novamente no problema de fatorar $n = p\cdot q$ onde $p$ e $q$ são primos grandes. Este método, em particular, é altamente eficiente quando $p-1$ tem fatores primos pequenos.
+
+\subsection{Método}
+
+Seja $n = pq$, com $p, q$ primos. O Pequeno Teorema de Fermat garante que 
+
+\[
+a^{p-1} \equiv 1 \pmod{p}
+\]
+
+para todo $a$ que seja primo com $p$. Mas na prática, não sabemos o valor de $p$, veremos o que acontece em breve. Suponha que $p-1$ seja o fator de algum número $L$. Então $L = (p-1)k$, logo:
+
+\[
+a^{L} \equiv (a^{p-1})^{k}
+\equiv 1 \pmod{p}
+\]
+
+Consequentemente, $p$ divide $a^{L} - 1$, e uma vez que $p$ é um fator de $n$, segue que o \textit{mdc} de $a^{L}-1$ e $n$ tem o fator $p$.
+
+\textit{Problema:} Como encontrar $L$?
+
+Para fatorar algum número $n$, escolha $a$ relativamente primo com $n$. Então:
+\begin{itemize}
+    \item Calcule $a^{k!}$ para $k= 1, 2, \dots$ até algum limite.
+    \item Encontre o \textit{mdc} de $(a^{k!} - 1) \pmod{n}$ e $n$.
+    \item Qualquer \textit{mdc} não trivial é um fator de $n$.
+\end{itemize}
+
+\textbf{Exemplo.} Fatore $1403$ usando o método $p-1$ de Pollard.
+
+Tomando $a = 2$ e calculando $2^{k!} \pmod{1403}$ para $k = 2,3,4, \dots$ e encontrando \textit{mdc}$(2^{k!} - 1, 1403)$
+
+\begin{align*}
+    2^{2!} &\equiv 4 \pmod{1403}   & mdc(4-1, 1403) &= 1 \quad \Rightarrow \text{Continuamos} \\[6pt]
+    2^{3!} &\equiv 64 \pmod{1403}  & mdc(64-1, 1403) &= 1 \quad \Rightarrow \text{Continuamos} \\[6pt]
+    2^{4!} &\equiv 142 \pmod{1403} & mdc(142-1, 1403) &= 1 \quad \Rightarrow \text{Continuamos} \\[6pt]
+    2^{5!} &\equiv 794 \pmod{1403} & mdc(794-1, 1403) &= 61 \quad \Rightarrow \textbf{Achamos!}
+\end{align*}
+
+Daí, encontramos o fator $p=61$, donde obtemos $1403 = 61 \times 23$.
+
+\subsection{Implementação Computacional}
