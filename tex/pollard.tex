@@ -23,7 +23,7 @@ Consequentemente, $p$ divide $a^{L} - 1$, e uma vez que $p$ é um fator de $n$, 
 
 Para fatorar algum número $n$, escolha $a$ relativamente primo com $n$. Então:
 \begin{itemize}
-    \item Calcule $a^{k!}$ para $k= 1, 2, \dots$ até algum limite.
+    \item Calcule $a^{k!} \pmod{n} $ para $k= 1, 2, \dots$ até algum limite ($B$).
     \item Encontre o \textit{mdc} de $(a^{k!} - 1) \pmod{n}$ e $n$.
     \item Qualquer \textit{mdc} não trivial é um fator de $n$.
 \end{itemize}
@@ -42,3 +42,69 @@ Tomando $a = 2$ e calculando $2^{k!} \pmod{1403}$ para $k = 2,3,4, \dots$ e enco
 Daí, encontramos o fator $p=61$, donde obtemos $1403 = 61 \times 23$.
 
 \subsection{Implementação Computacional}
+
+A Implementação computacional segue as mesmas linhas que a explicação teórica feita anteriormente. Apenas comentaremos alguns detalhes que não foram descritos até então. O código está disponível abaixo, e será detalhado a seguir.
+
+\begin{lstlisting}[style=PythonStyle, caption=Algoritmo Pollard $n-1$, label=code:Fermat]
+def pollard(n):
+    # Testando várias bases, quando necessário
+    bases = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31] 
+
+    B = int(n**0.20) # limite para k (usaremos k!)
+    
+    for base in bases:
+        a = base 
+        for k in range(2, B + 1):
+            a = pow(a, k, n) # a^k (mod n)
+            d = math.gcd(a - 1, n)
+            
+            if 1 < d < n:
+                return d, n // d
+            
+            elif d == n:
+                print(f"  -> Falha com base {base} (MDC deu n). Trocando base...")
+                break
+
+    return None, None
+
+p,q = pollard(z)
+
+if p == None and q == None:
+    print("Falhamos!")
+\end{lstlisting}
+
+Os detalhes são o que segue:
+\begin{enumerate}
+    \item O código começa com uma lista de bases para o qual possivelmente podemos testar o algoritmo, essa lista serve para caso em algum momento da iteração o mdc entre $n$ e $a^{k!} - 1 \pmod{n}$ seja $n$, sinal que devemos mudar de base.
+    \item Definimos também um valor $B$ que será o limite de iterações possíveis para $k$. Esse valor $B$ irá cresce de acordo com o tamanho de $n$, usaremos $B = n^{0.20}$ para como heurística inicial. Para alguns números muito grandes, como por exemplo, $n = 68569780649272979$, se $B = n^{0.20}$, o algoritmo falha (pois $p-1$ não possui fatores primos pequenos), porém, se aumentarmos o valor do expoente para $0.25$, o algoritmo já funciona perfeitamente.
+    \item A partir daí, iteramos e fazemos os cálculos como descrito anteriormente
+\end{enumerate}
+
+\subsubsection{Simulação}
+
+Agora iremos comparar nosso algoritmo pollard $p-1$ com o algoritmo de força bruta. Como queremos verificar a possível eficiencia do algoritmo, começaremos com $5$ dígitos e iremos até $18$. Além disso, foram escolhidos semiprimos de forma aleatória, e para números gerados aleatoriamente, a probabilidade de $p−1$ ter fatores primos pequenos é relativamente baixa. Por isso, tivemos que aumentar B drasticamente ($n^{0.47}$) para forçar o algoritmo a funcionar, o que atrapalhou um pouco sua performance comparada à teoria.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/comparePollardNoLog.png}
+        \caption{Sem Escala Logarítmica.}
+        \label{fig:pollardlog}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/comparePollardLog.png}
+        \caption{Escala Logarítmica.}
+        \label{fig:pollardnolog}
+    \end{minipage}
+\end{figure}
+
+Perceba que quando os dígitos ainda não são consideravelmente grandes, ainda ficamos na dúvida qual algoritmo é mais eficiente, a partir do $15^{o}$ já notamos uma maior vantagem para o método de pollard $p-1$. Além disso, como os semiprimos foram escolhidos de forma aleatória, não percebemos uma vantagem tão consistente e notória ao método de pollard.
+
+De fato, se escolhessemos semiprimos $n = p\cdot q$ tais que $p-1$ possuem fatores primos suficientemente pequenos, os resultados seriam mais vantajosos ao método de pollard. 
+
+\subsection{Conclusão}
+
+Podemos perceber pelos resultados e pela discussão acima que o algoritmo de Pollard $p-1$ é um excelente algoritmo em comparação a força bruta para quando temos muitos dígitos em $n$. E mais ainda, quando o fator primo $p$ de $n$ é tal que $p-1$ tem fatores primos suficientemente pequenos. Ou seja, apesar de um bom método, ele se mostra relativamente limitado. Porém sobre certas condições como a suavidade de $p-1$, ele é altamente eficiente.
