@@ -82,7 +82,7 @@ Os detalhes são o que segue:
 
 \subsubsection{Simulação}
 
-Agora iremos comparar nosso algoritmo pollard $p-1$ com o algoritmo de força bruta. Como queremos verificar a possível eficiencia do algoritmo, começaremos com $5$ dígitos e iremos até $18$. Além disso, foram escolhidos semiprimos de forma aleatória, e para números gerados aleatoriamente, a probabilidade de $p−1$ ter fatores primos pequenos é relativamente baixa. Por isso, tivemos que aumentar B drasticamente ($n^{0.47}$) para forçar o algoritmo a funcionar, o que atrapalhou um pouco sua performance comparada à teoria.
+Agora iremos comparar nosso algoritmo pollard $p-1$ com o algoritmo de força bruta. Como queremos verificar a possível eficiencia do algoritmo, começaremos com $5$ dígitos e iremos até $18$. Além disso, foram escolhidos semiprimos de forma aleatória, e para números gerados aleatoriamente, a probabilidade de $p-1$ ter fatores primos pequenos é relativamente baixa. Por isso, tivemos que aumentar B drasticamente ($n^{0.47}$) para forçar o algoritmo a funcionar, o que atrapalhou um pouco sua performance comparada à teoria.
 
 \begin{figure}[H]
     \centering
@@ -103,8 +103,27 @@ Agora iremos comparar nosso algoritmo pollard $p-1$ com o algoritmo de força br
 
 Perceba que quando os dígitos ainda não são consideravelmente grandes, ainda ficamos na dúvida qual algoritmo é mais eficiente, a partir do $15^{o}$ já notamos uma maior vantagem para o método de pollard $p-1$. Além disso, como os semiprimos foram escolhidos de forma aleatória, não percebemos uma vantagem tão consistente e notória ao método de pollard.
 
-De fato, se escolhessemos semiprimos $n = p\cdot q$ tais que $p-1$ possuem fatores primos suficientemente pequenos, os resultados seriam mais vantajosos ao método de pollard. 
+Agora, escolhemos semiprimos $n = p\cdot q$ tais que $p-1$ possuem fatores primos suficientemente pequenos (chamaremos $p-1$ de $B-$suave, isto é, o maior fator primo de $p-1$ é menor que $B$), vejamos os resultados encontrados:
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/comparePollardVnolog.png}
+        \caption{Sem Escala Logarítmica.}
+        \label{fig:pollardvlog}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/comparePollardVlog.png}
+        \caption{Escala Logarítmica.}
+        \label{fig:pollardvnolog}
+    \end{minipage}
+\end{figure}
+
+Agora a vantagem do método de pollard é bem mais notória, ganhando praticamente em todos os números de dígitos.
 
 \subsection{Conclusão}
 
-Podemos perceber pelos resultados e pela discussão acima que o algoritmo de Pollard $p-1$ é um excelente algoritmo em comparação a força bruta para quando temos muitos dígitos em $n$. E mais ainda, quando o fator primo $p$ de $n$ é tal que $p-1$ tem fatores primos suficientemente pequenos. Ou seja, apesar de um bom método, ele se mostra relativamente limitado. Porém sobre certas condições como a suavidade de $p-1$, ele é altamente eficiente.
+Podemos perceber pelos resultados e pela discussão acima que o algoritmo de Pollard $p-1$ é um excelente algoritmo em comparação a força bruta para quando temos muitos dígitos em $n$. E mais ainda, quando o fator primo $p$ de $n$ é tal que $p-1$ é $B-$suave. Assim, apesar de um bom método, ele se mostra relativamente limitado. Porém sobre certas condições como a suavidade de $p-1$, ele é altamente eficiente.

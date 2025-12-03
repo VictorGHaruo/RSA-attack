@@ -45,10 +45,15 @@ def pollard(n):
     end = time.time()
     return (None, None), end-begin
 
-semiprimes = [47053, 304679, 5494327, 76562491, 816359183, 
+random_semiprimes = [47053, 304679, 5494327, 76562491, 816359183, 
                2257234729, 36926403029, 831472422719, 
                6608034579161, 53177326426447, 640919985665423, 
                5550849765972349, 53033357137300961, 496121090393968057]
+
+vulnerable_semiprimes = [38807, 139037, 2657621, 46628213, 117036793, 
+               6361589687, 14069641051, 214106961829, 
+               1392433829977, 24217699987267, 102537712225591, 
+               1151394403072939, 75761282777688791, 172748749976857741]
 
 def compare(semiprimes):
     timesN = []
@@ -68,17 +73,18 @@ def compare(semiprimes):
 
     num_digitos = np.array([len(str(n)) for n in semiprimes])
 
-    #plt.semilogy(num_digitos, timesN, 'o-', label="Método Naive")
-    #plt.semilogy(num_digitos, timesP, 'o-', label="Método de Pollard")
-    plt.plot(num_digitos, timesN, 'o-', label="Método Naive")
-    plt.plot(num_digitos, timesP, 'o-', label="Método de Pollard")
+    plt.semilogy(num_digitos, timesN, 'o-', label="Método Naive")
+    plt.semilogy(num_digitos, timesP, 'o-', label="Método de Pollard")
+    #plt.plot(num_digitos, timesN, 'o-', label="Método Naive")
+    #plt.plot(num_digitos, timesP, 'o-', label="Método de Pollard")
 
     plt.xlabel("Número de Dígitos (k)")
-    plt.ylabel("Tempo de Fatoração (s) - Sem escala Log")
+    plt.ylabel("Tempo de Fatoração (s) - Com escala Log")
     plt.title("Tempo vs. Número de Dígitos")
     plt.legend()
     
     plt.grid(True)
     plt.show()
 
-compare(semiprimes)
+# compare(random_semiprimes)
+compare(vulnerable_semiprimes)
