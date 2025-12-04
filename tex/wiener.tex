@@ -1,0 +1,54 @@
+\section{Ataque de Wiener}
+
+O ataque de Wiener é um método clássico de criptoanálise contra o RSA quando o expoente secreto $d$ é anormalmente pequeno.
+Em 1990, Michael Wiener demonstrou que, se $d < \frac13 N^{1/4}$
+então é possível recuperar $d$ a partir do par público $(N, e)$ utilizando frações contínuas, em tempo $O(\log N)$.
+
+A ideia é que, para chaves fracas, a razão $e/N$ possui convergentes que aproximam muito bem a razão $e/\varphi(N) \approx k/d$,
+permitindo recuperar $d$ ao testar cada convergente $(k, d)$.
+
+\subsection{Método}
+
+Seja $(N, e)$ a chave pública. Calculamos a fração contínua de $e/N$, que é feito via o algoritmo estendido de Euclides.
+Para cada convergente $(k, d)$ dessa fração, verificamos se $ed - 1$ é múltiplo de $k$, sugerindo que $\varphi(N) = \frac{e d - 1}{k}$.
+Então testamos se essa $\varphi(N)$ leva a um par de fatores válidos $(p, q)$ de $N$, resolvendo a equação quadrática
+$x^2 - (N - \varphi(N) + 1)x + N = 0$. Caso $p$ e $q$ sejam inteiros positivos e $p q = N$, então o valor correto de $d$ foi encontrado.
+
+
+
+\begin{lstlisting}[style=PythonStyle, caption=Ataque de Wiener, label=code:Wiener]
+def wiener_attack(N, e):
+    cf = continued_fraction(e, N)
+    
+    for (k, d) in convergents(cf):
+        if k == 0: continue
+        
+        # Verify if (e*d - 1)/k is integer => possible phi(N)
+        if (e*d - 1) % k != 0: continue
+
+        phi_candidate = (e*d - 1) // k
+
+        # Calculate s = p + q
+        s = N - phi_candidate + 1
+        disc = s*s - 4*N
+
+        # Discriminant must be perfect square
+        if not is_perfect_square(disc): continue
+
+        t = isqrt(disc)
+        p = (s + t) // 2
+        q = (s - t) // 2
+
+        # Verify p*q == N
+        if p > 1 and q > 1 and p*q == N: return d  # Broke!
+
+    return None  # Passed!
+\end{lstlisting}
+
+\subsection{Conclusão}
+
+A segurança do RSA depende muito da escolha de um expoente secreto suficientemente ``grande'' (da ordem de $\varphi(N)$),
+pois quando isso não acontece, conseguimos aproximar $e/\varphi(N)$ por $k/d$ e, como $\varphi(N)$ está muito próximo de $N$,
+também $e/N$. Geralmente, ainda é computacionalmente custoso determinar este $d$ se ele for grande, mas dada a cota $d < \frac13 N^{1/4}$,
+essa aproximação se torna fina o bastante para satisfazer o critério clássico das frações contínuas, forçando $k/d$ a aparecer nas
+convergentes da expansão de $e/N$, eliminando a necessidade de fatorar $N$.
